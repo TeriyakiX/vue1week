@@ -1,3 +1,5 @@
+let eventBus = new Vue()
+
 Vue.component('product', {
 
     props: {
@@ -14,20 +16,14 @@ Vue.component('product', {
     </div>
     <div class="product-info">
 
-        
-        
         <h1>{{ title }}</h1>
+        
         <p>{{description}}</p>
+        
         <a :href="link"> More products like this.</a>
 
           <p v-if="inStock">In stock</p>
-
-          <p
-                  v-else
-                  class="line"
-          >
-              Out of Stock
-          </p>
+          <p v-else class="line">Out of Stock</p>
 
         <span v-show="onSale">{{ sale }}</span>
 
@@ -39,16 +35,22 @@ Vue.component('product', {
                 :key="variant.variantId"
                 :style="{ backgroundColor:variant.variantColor }"
                 @mouseover="updateProduct(index)"
-        ></div>
+        >
+        
+        </div>
 
 
 
 
-        <div v-for="size in sizes">
+        <div 
+        
+            v-for="size in sizes"
+        
+        >
             <li>{{ size }}</li>
+            
         </div>
         
-        <p>Shipping: {{ shipping }}</p>
 
         <button
                 @click="addToCart"
@@ -66,20 +68,15 @@ Vue.component('product', {
             Remove from cart
         </button>
         
-        <div>
-            <h2>Reviews</h2>
-            <p v-if="!reviews.length">There are no reviews yet.</p>
-                <ul>
-                  <li v-for="review in reviews">
-                  <p>Name:{{ review.name }}</p>
-                  <p>Rating: {{ review.rating }}</p>
-                  <p>Review:{{ review.review }}</p>
-                  <span>Picked: {{ review.picked }}</span>
-                  </li>
-                </ul>
-        </div>  
-
-        <product-review @review-submitted="addReview"></product-review>
+          
+        <product-tabs 
+        
+            :reviews="reviews"
+            :premium="premium"
+        >       
+        
+        </product-tabs>
+       
     </div>
   </div>
  `,
@@ -125,12 +122,15 @@ Vue.component('product', {
         removeCart() {
             this.$emit('return-to-cart', this.variants[this.selectedVariant].variantId);
         },
-        addReview(productReview) {
-            this.reviews.push(productReview)
-        }
-
 
     },
+    mounted() {
+        eventBus.$on('review-submitted', productReview => {
+            this.reviews.push(productReview)
+            console.log(productReview)
+        })
+    },
+
     computed: {
         title() {
             return this.brand + ' ' + this.product;
@@ -177,25 +177,23 @@ Vue.component('product-review', {
   <form class="review-form" @submit.prevent="onSubmit">
           <p v-if="errors.length">
             <b>Please correct the following error(s):</b>
-         <ul>
-           <li v-for="error in errors">{{ error }}</li>
-         </ul>
-        </p>
+                 <ul>
+                   <li v-for="error in errors">{{ error }}</li>
+                 </ul>
+          </p>
         
         <div class="picked">
         
         <p>Would you recommend this product?</p>
          <input type="radio" id="Yes" value="Yes" name="picked"  v-model="picked" />
-          <label for="Yes">Yes</label>
+                <label for="Yes">Yes</label>
           <br />
           <input type="radio" id="No" value="No" name="picked" v-model="picked" />
-          <label for="No">No</label>
+                <label for="No">No</label>
           <br />
         
         </div>
         
-          
-          
          <p>
            <label for="name">Name:</label>
            <input id="name" v-model="name" placeholder="name">
@@ -243,7 +241,7 @@ Vue.component('product-review', {
                     rating: this.rating,
                     picked: this.picked
                 }
-                this.$emit('review-submitted', productReview)
+                eventBus.$emit('review-submitted', productReview)
                 this.name = null
                 this.review = null
                 this.rating = null
@@ -261,6 +259,78 @@ Vue.component('product-review', {
 
 })
 
+Vue.component('product-tabs', {
+    template: `
+   <div>   
+       <ul>
+             <span class="tab"
+                       :class="{ activeTab: selectedTab === tab }"
+                       v-for="(tab, index) in tabs"
+                       @click="selectedTab = tab"
+             >  {{ tab }}</span>
+         
+       </ul>
+       <div v-show="selectedTab === 'Reviews'">
+       
+            <h2>Reviews</h2>
+            
+            <p v-if="!reviews.length">There are no reviews yet.</p>
+                    <ul>
+                      <li v-for="review in reviews">
+                      <p>Name:{{ review.name }}</p>
+                      <p>Rating: {{ review.rating }}</p>
+                      <p>Review:{{ review.review }}</p>
+                      <span>Question: {{ review.picked }}</span>
+                      </li>
+                    </ul>
+        </div>
+        <div v-show="selectedTab === 'Make a Review'">
+              <product-review></product-review>
+        </div>
+        
+        <div v-show="selectedTab === 'Shipping'">
+            <p>Shipping: {{ shipping }}</p>
+        </div>
+        
+        <div v-show="selectedTab === 'Details'">
+            <product-details/>
+        </div>
+        
+     </div>
+   
+ `,
+    data() {
+        return {
+            tabs: ['Reviews', 'Make a Review', 'Shipping' , 'Details'],
+            selectedTab: 'Reviews'  // устанавливается с помощью @click
+        }
+    },
+    props: {
+
+        reviews: {
+            type: Array,
+            required: false,
+            },
+
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
+    computed: {
+
+        shipping() {
+            if (this.premium) {
+                return "Free";
+            } else {
+                return 2.99
+            }
+        }
+    }
+
+})
+
+
 
 
 
@@ -277,7 +347,8 @@ new Vue({
         returnCart() {
             this.cart.pop();
         }
-    }
+    },
+
 
 })
 
