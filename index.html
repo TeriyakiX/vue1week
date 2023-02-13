@@ -24,8 +24,11 @@
 
     <div class="product-info">
       <h1>{{ product }}</h1>
-      <p>{{description}}</p>
-      <a :href="link"> More products like this.</a>
+
+      <span v-show="onSale">On Sale</span>
+
+      <p v-show="inStock">In Stock</p>
+
     </div>
 
   </div>
