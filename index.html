@@ -13,75 +13,16 @@
 <body>
 
 <div id="app">
-  <div class="product">
-    <div class="product-image">
-        <img :src="image" :alt="altText"/>
-    </div>
-    <div class="product-info">
+    <product
+            :premium="premium"
+    >
 
-        <div class="cart">
-            <p>Cart({{ cart }})</p>
-        </div>
+    </product>
 
-        <h1>{{ title }}</h1>
-        <p>{{description}}</p>
-        <a :href="link"> More products like this.</a>
-
-          <p v-if="inStock">In stock</p>
-
-          <p
-                  v-else
-                  class="line"
-          >
-              Out of Stock
-          </p>
-
-        <span v-show="onSale">{{ sale }}</span>
-
-        <ul>
-          <li v-for="detail in details">{{ detail }}</li>
-        </ul>
-
-        <div
-                class="color-box"
-                v-for="(variant, index) in variants"
-                :key="variant.variantId"
-                :style="{ backgroundColor:variant.variantColor }"
-                @mouseover="updateProduct(index)"
-        ></div>
-
-
-
-
-        <div v-for="size in sizes">
-            <li>{{ size }}</li>
-        </div>
-
-
-        <button
-                @click="addToCart"
-                :disabled="!inStock"
-                :class="{ disabledButton: !inStock }"
-        >
-            Add to cart
-        </button>
-
-        <button
-                @click="RemoveCart"
-                :disabled="!inStock"
-                :class="{ disabledButton: !inStock }"
-        >
-            Remove to cart
-        </button>
-
-
-
-    </div>
-  </div>
+    <product-details/>
 </div>
 
-  </div>
-</div>
+
 
 </body>
 </html>
