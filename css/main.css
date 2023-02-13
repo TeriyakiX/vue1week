@@ -63,7 +63,6 @@ button {
 .review-form {
     width: 400px;
     padding: 20px;
-    margin: 40px;
     border: 1px solid #d8d8d8;
 }
 
@@ -89,4 +88,14 @@ textarea {
 }
 .line {
     text-decoration: line-through
+}
+
+.demo {
+  align-items: center;
+}
+
+.picked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
