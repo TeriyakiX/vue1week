@@ -1,4 +1,12 @@
 Vue.component('product', {
+
+    props: {
+        premium: {
+            type: Boolean,
+            required: true
+        }
+    },
+
     template: `
    <div class="product">
     <div class="product-image">
@@ -6,9 +14,7 @@ Vue.component('product', {
     </div>
     <div class="product-info">
 
-        <div class="cart">
-            <p>Cart({{ cart }})</p>
-        </div>
+        
         
         <h1>{{ title }}</h1>
         <p>{{description}}</p>
@@ -53,11 +59,11 @@ Vue.component('product', {
         </button>
 
         <button
-                @click="RemoveCart"
+                @click="removeCart"
                 :disabled="!inStock"
                 :class="{ disabledButton: !inStock }"
         >
-            Remove to cart
+            Remove from cart
         </button>
 
 
@@ -65,12 +71,6 @@ Vue.component('product', {
     </div>
   </div>
  `,
-    props: {
-        premium: {
-            type: Boolean,
-            required: true
-        }
-    },
 
     data() {
         return {
@@ -96,21 +96,22 @@ Vue.component('product', {
             ],
 
             sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
-            cart: 0,
             selectedVariant: 0,
         }
     },
     methods: {
         addToCart() {
-            this.cart += 1
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
         },
+
         updateProduct(index) {
             this.selectedVariant = index;
             console.log(index);
         },
-        RemoveCart() {
-            this.cart -= 1
+        removeCart() {
+            this.$emit('return-to-cart', this.variants[this.selectedVariant].variantId);
         },
+
     },
     computed: {
         title() {
@@ -155,7 +156,17 @@ Vue.component('product-details', {
 new Vue({
     el: '#app',
     data: {
-        premium: true
+        premium: true,
+        cart: [],
+    },
+    methods: {
+        updateCart(id) {
+            this.cart.push(id);
+        },
+        returnCart() {
+            this.cart.pop();
+        }
     }
+
 })
 

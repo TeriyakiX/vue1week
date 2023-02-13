@@ -13,12 +13,19 @@
 <body>
 
 <div id="app">
+
+    <div class="cart">
+        <p>Cart({{ cart.length }})</p>
+
+    </div>
+
     <product
             :premium="premium"
+            @add-to-cart="updateCart"
+            @return-to-cart="returnCart"
     >
 
     </product>
-
     <product-details/>
 </div>
 
