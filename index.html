@@ -23,7 +23,7 @@
             <p>Cart({{ cart }})</p>
         </div>
 
-        <h1>{{ product }}</h1>
+        <h1>{{ title }}</h1>
         <p>{{description}}</p>
         <a :href="link"> More products like this.</a>
 
@@ -36,7 +36,7 @@
               Out of Stock
           </p>
 
-        <span v-show="onSale">On Sale</span>
+        <span v-show="onSale">{{ sale }}</span>
 
         <ul>
           <li v-for="detail in details">{{ detail }}</li>
@@ -44,12 +44,12 @@
 
         <div
                 class="color-box"
-                v-for="variant in variants"
+                v-for="(variant, index) in variants"
                 :key="variant.variantId"
                 :style="{ backgroundColor:variant.variantColor }"
-                @mouseover="updateProduct(variant.variantImage)"
-        >
-        </div>
+                @mouseover="updateProduct(index)"
+        ></div>
+
 
 
 
