@@ -100,7 +100,7 @@ Vue.component('product', {
                     variantId: 2235,
                     variantColor: 'blue',
                     variantImage: "./assets/vmSocks-blue-onWhite.jpg",
-                    variantQuantity: 0
+                    variantQuantity: 10
                 }
             ],
 
@@ -338,7 +338,7 @@ new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: [],
+        cart: []
     },
     methods: {
         updateCart(id) {
@@ -348,6 +348,11 @@ new Vue({
             this.cart.pop();
         }
     },
+    computed: {
+        checkCart() {
+
+        }
+    }
 
 
 })
