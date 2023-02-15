@@ -13,13 +13,11 @@
 <body>
 
 <div id="app">
-
     <div class="cart">
         <p>Cart:
             ({{ checkCart }})
         </p>
     </div>
-
     <product
             :premium="premium"
             @add-to-cart="updateCart"

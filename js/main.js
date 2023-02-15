@@ -112,15 +112,15 @@ Vue.component('product', {
     },
     methods: {
         addToCart() {
-            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
+            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantColor);
         },
 
         updateProduct(index) {
             this.selectedVariant = index;
-            console.log(index);
+
         },
         removeCart() {
-            this.$emit('return-to-cart', this.variants[this.selectedVariant].variantId);
+            this.$emit('return-to-cart', this.variants[this.selectedVariant].variantColor);
         },
 
     },
@@ -341,18 +341,38 @@ new Vue({
         cart: []
     },
     methods: {
-        updateCart(id) {
-            this.cart.push(id);
+        updateCart(Color) {
+            this.cart.push(Color);
+            localStorage.setItem('cart', JSON.stringify(this.cart))
         },
         returnCart() {
             this.cart.pop();
+            localStorage.setItem('cart', JSON.stringify(this.cart))
         }
     },
     computed: {
         checkCart() {
+            let CartColor = this.cart.map((i) => i)
 
+            let str = "";
+            for (let i = 0; i < CartColor.length; i++ ){
+                let count = 0;
+                let item = CartColor[i]
+                while(CartColor.indexOf(item) !== -1){
+
+                    CartColor.splice(CartColor.indexOf(item),1)
+                    count++;
+                }
+                str += `${item}: ${count} `;
+            }
+            return str
         }
-    }
+    },
+
+    mounted() {
+        this.cart = JSON.parse(localStorage.getItem('cart'));
+    },
+
 
 
 })
