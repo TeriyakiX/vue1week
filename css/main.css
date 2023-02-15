@@ -64,6 +64,8 @@ button {
     width: 400px;
     padding: 20px;
     border: 1px solid #d8d8d8;
+    text-align: center;
+    margin-top: 15px;
 }
 
 input {
@@ -101,4 +103,9 @@ textarea {
 }
 .box {
     padding: 10px;
+}
+.size {
+    display: flex;
+    justify-content: center;
+    text-align: center;
 }

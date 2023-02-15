@@ -28,7 +28,7 @@ Vue.component('product', {
         <span v-show="onSale">{{ sale }}</span>
 
         <p>User is premium: {{ premium }}</p>
-
+        <p>Would you color?</p>
         <div
                 class="color-box"
                 v-for="(variant, index) in variants"
@@ -39,18 +39,14 @@ Vue.component('product', {
         
         </div>
 
-
-
-
-        <div 
-        
-            v-for="size in sizes"
-        
-        >
-            <li>{{ size }}</li>
-            
+        <form class="review-form" @click="addToCart">
+        <p>Would you size?</p>
+        <div class="size">
+            <div class="size_slow"   v-for="size in sizes">
+                <input type="radio" id="Yes" value="Yes" name="size" >{{ size }} <br /></input>
+            </div>
         </div>
-        
+        </form>
 
         <button
                 @click="addToCart"
@@ -104,7 +100,13 @@ Vue.component('product', {
                 }
             ],
 
-            sizes: ['S', 'M', 'L', 'XL', 'XXL', 'XXXL'],
+            sizes: [
+                'S',
+                'M',
+                'L',
+                'XL',
+                'XXL',
+                'XXXL'],
             selectedVariant: 0,
             reviews: [],
 
