@@ -338,7 +338,11 @@ new Vue({
     el: '#app',
     data: {
         premium: true,
-        cart: []
+        cart: [],
+        colors: [
+            'green',
+            'blue',
+        ]
     },
     methods: {
         updateCart(Color) {
@@ -348,24 +352,32 @@ new Vue({
         returnCart() {
             this.cart.pop();
             localStorage.setItem('cart', JSON.stringify(this.cart))
-        }
+        },
     },
     computed: {
         checkCart() {
             let CartColor = this.cart.map((i) => i)
 
-            let str = "";
-            for (let i = 0; i < CartColor.length; i++ ){
+            let arrObj = [];
+            for (let i = 0; i < CartColor.length; i++) {
                 let count = 0;
                 let item = CartColor[i]
-                while(CartColor.indexOf(item) !== -1){
+                while (CartColor.indexOf(item) !== -1) {
 
-                    CartColor.splice(CartColor.indexOf(item),1)
+                    CartColor.splice(CartColor.indexOf(item), 1)
                     count++;
                 }
-                str += `${item}: ${count} `;
+                let obj = {};
+                obj['color'] = item
+                obj['count'] = count
+                arrObj.push(obj);
+                console.log(arrObj)
+
+
             }
-            return str
+            return arrObj
+
+
         }
     },
 

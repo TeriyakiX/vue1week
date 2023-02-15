@@ -14,9 +14,17 @@
 
 <div id="app">
     <div class="cart">
-        <p>Cart:
-            ({{ checkCart }})
+        <p
+        >Cart:
+            <span  class="box"
+                   v-for="item in checkCart"
+                  :style="{ backgroundColor:item.color}"
+            >
+                {{item.count}}
+            </span>
         </p>
+
+
     </div>
     <product
             :premium="premium"
